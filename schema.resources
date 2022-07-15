@@ -3,5 +3,20 @@
 
 
 type Query {
-  ok: Boolean!
+  stages: [Stage]!
+}
+
+type Stage {
+  completed: Boolean
+  id: ID
+  position: Int
+  steps: [Step]
+  title: String
+}
+
+type Step {
+  completed: Boolean
+  id: Int
+  stage: Stage
+  title: String
 }

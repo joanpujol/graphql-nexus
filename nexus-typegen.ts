@@ -4,7 +4,7 @@
  */
 
 
-
+import type { Context } from "./api/context"
 
 
 
@@ -29,6 +29,16 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Query: {};
+  Stage: { // root type
+    id?: string | null; // ID
+    position?: number | null; // Int
+    title?: string | null; // String
+  }
+  Step: { // root type
+    completed?: boolean | null; // Boolean
+    id?: number | null; // Int
+    title?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -43,13 +53,39 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Query: { // field return type
-    ok: boolean; // Boolean!
+    stages: Array<NexusGenRootTypes['Stage'] | null>; // [Stage]!
+  }
+  Stage: { // field return type
+    completed: boolean | null; // Boolean
+    id: string | null; // ID
+    position: number | null; // Int
+    steps: Array<NexusGenRootTypes['Step'] | null> | null; // [Step]
+    title: string | null; // String
+  }
+  Step: { // field return type
+    completed: boolean | null; // Boolean
+    id: number | null; // Int
+    stage: NexusGenRootTypes['Stage'] | null; // Stage
+    title: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Query: { // field return type name
-    ok: 'Boolean'
+    stages: 'Stage'
+  }
+  Stage: { // field return type name
+    completed: 'Boolean'
+    id: 'ID'
+    position: 'Int'
+    steps: 'Step'
+    title: 'String'
+  }
+  Step: { // field return type name
+    completed: 'Boolean'
+    id: 'Int'
+    stage: 'Stage'
+    title: 'String'
   }
 }
 
@@ -87,7 +123,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

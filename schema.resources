@@ -4,6 +4,13 @@
 
 type Query {
   stages: [Stage]!
+  steps(
+    """Which page to show"""
+    page: Int
+
+    """The number of results to show per page. Default = 20"""
+    pageSize: Int
+  ): [Step]
 }
 
 type Stage {

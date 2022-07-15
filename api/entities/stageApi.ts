@@ -15,4 +15,9 @@ export class StageAPI {
     getAllStages(): Stage[] {
         return this.database.stages
     }
+
+    // TODO Add create function
+    // TODO Add update function (title, position)
+    // TODO Add delete function
+    // TODO Add helper function to modify position
 }

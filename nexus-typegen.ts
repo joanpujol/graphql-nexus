@@ -54,6 +54,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   Query: { // field return type
     stages: Array<NexusGenRootTypes['Stage'] | null>; // [Stage]!
+    steps: Array<NexusGenRootTypes['Step'] | null> | null; // [Step]
   }
   Stage: { // field return type
     completed: boolean | null; // Boolean
@@ -73,6 +74,7 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     stages: 'Stage'
+    steps: 'Step'
   }
   Stage: { // field return type name
     completed: 'Boolean'
@@ -90,6 +92,12 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Query: {
+    steps: { // args
+      page?: number | null; // Int
+      pageSize?: number | null; // Int
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {

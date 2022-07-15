@@ -1,6 +1,6 @@
 import {StageAPI} from './entities/stageApi'
 import {StepAPI} from './entities/stepApi'
-import {db} from './entities/db'
+import {db} from '../tests/mockData'
 
 export interface Context {
     stageApi: StageAPI

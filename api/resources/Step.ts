@@ -1,5 +1,6 @@
-import {extendType, intArg, objectType} from 'nexus'
+import {extendType, idArg, intArg, nonNull, objectType} from 'nexus'
 import {Stage} from './Stage'
+import {UserInputError} from "apollo-server"
 
 export const Step = objectType({
     name: 'Step',
@@ -33,6 +34,42 @@ export const StepQuery = extendType({
                 return context.stepApi.getStepsWithPagination(
                     pageSize,
                     page
+                )
+            },
+        })
+    },
+})
+
+export const StepMutation = extendType({
+    type: 'Mutation',
+    definition(t) {
+        // TODO Implement other CRUD operations
+        t.nonNull.field('switchStep', {
+            type: 'Step',
+            args: {
+                id: nonNull(idArg()),
+            },
+            resolve(root, { id }, context) {
+                const step = context.stepApi.getStepById(id)
+                if(!step) {
+                    throw new UserInputError('The requested id does not exist', {
+                        argumentName: 'id'
+                    });
+                }
+                const isStageCompleted = context.stageApi.getStageById(step.stageId).completed
+                if (isStageCompleted) {
+                    throw new UserInputError('It\'s not possible to edit already completed stages', {
+                        argumentName: 'stageId'
+                    });
+                }
+                const previousStage = context.stageApi.getPreviousStage(step.stageId)
+                if(!previousStage || !previousStage.completed) {
+                    throw new UserInputError('It\'s not possible check tasks if the previous Stage is not complete', {
+                        argumentName: 'stageId'
+                    });
+                }
+                return context.stepApi.switchStep(
+                    id
                 )
             },
         })

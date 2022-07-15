@@ -28,6 +28,7 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Mutation: {};
   Query: {};
   Stage: { // root type
     id?: string | null; // ID
@@ -52,6 +53,9 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    switchStep: NexusGenRootTypes['Step']; // Step!
+  }
   Query: { // field return type
     stages: Array<NexusGenRootTypes['Stage'] | null>; // [Stage]!
     steps: Array<NexusGenRootTypes['Step'] | null> | null; // [Step]
@@ -72,6 +76,9 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Mutation: { // field return type name
+    switchStep: 'Step'
+  }
   Query: { // field return type name
     stages: 'Stage'
     steps: 'Step'
@@ -92,6 +99,11 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    switchStep: { // args
+      id: string; // ID!
+    }
+  }
   Query: {
     steps: { // args
       page?: number | null; // Int

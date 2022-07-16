@@ -8,8 +8,9 @@ export class StageAPI {
         this.database = db
     }
 
-    getStageById(id: string): Stage | undefined {
-        return this.database.stages.find(step => step.id == id)
+    getStageById(id: string | null | undefined): Stage | null {
+        const stage = this.database.stages.find(step => step.id == id)
+        return stage ? stage: null
     }
 
     getAllStages(): Stage[] {

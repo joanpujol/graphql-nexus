@@ -3,7 +3,7 @@
 
 
 type Mutation {
-  switchStep(id: ID!): Step!
+  toggleStep(id: ID!): Step!
 }
 
 type Query {
@@ -27,7 +27,8 @@ type Stage {
 
 type Step {
   completed: Boolean
-  id: Int
+  id: ID
   stage: Stage
+  stageId: ID
   title: String
 }

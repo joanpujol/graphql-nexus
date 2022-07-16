@@ -9,7 +9,7 @@ export const Stage = objectType({
         t.int('position')
         t.boolean('completed', {
             resolve: (root, _, context) => {
-                return context.stageApi.getStageById(root.id).completed
+                return Boolean(context.stageApi.getStageById(root.id)?.completed)
             }
         })
         t.list.field('steps', {

@@ -1,17 +1,18 @@
 import {extendType, idArg, intArg, nonNull, objectType} from 'nexus'
 import {Stage} from './Stage'
-import {UserInputError} from "apollo-server"
+import {UserInputError} from 'apollo-server'
 
 export const Step = objectType({
     name: 'Step',
     definition(t) {
-        t.int('id')
+        t.id('id')
         t.string('title')
         t.boolean('completed')
+        t.id('stageId')
         t.field('stage', {
             type: Stage,
             resolve(root, _, context) {
-                return context.stepApi.getStepsByStageId(root.stageId)
+                return context.stageApi.getStageById(root.stageId)
             },
         })
     },
@@ -32,8 +33,8 @@ export const StepQuery = extendType({
             },
             resolve(root, { pageSize = 20, page = 1 }, context) {
                 return context.stepApi.getStepsWithPagination(
-                    pageSize,
-                    page
+                    pageSize as number,
+                    page as number
                 )
             },
         })
@@ -44,7 +45,7 @@ export const StepMutation = extendType({
     type: 'Mutation',
     definition(t) {
         // TODO Implement other CRUD operations
-        t.nonNull.field('switchStep', {
+        t.nonNull.field('toggleStep', {
             type: 'Step',
             args: {
                 id: nonNull(idArg()),
@@ -56,7 +57,7 @@ export const StepMutation = extendType({
                         argumentName: 'id'
                     });
                 }
-                const isStageCompleted = context.stageApi.getStageById(step.stageId).completed
+                const isStageCompleted = context.stageApi.getStageById(step.stageId)?.completed
                 if (isStageCompleted) {
                     throw new UserInputError('It\'s not possible to edit already completed stages', {
                         argumentName: 'stageId'
@@ -68,7 +69,7 @@ export const StepMutation = extendType({
                         argumentName: 'stageId'
                     });
                 }
-                return context.stepApi.switchStep(
+                return context.stepApi.toggleStep(
                     id
                 )
             },

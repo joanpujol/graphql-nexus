@@ -13,7 +13,7 @@ export class StepAPI {
         return this.database.steps.find(step => step.id == id)
     }
 
-    getStepsByStageId(stageId: string): Step[] {
+    getStepsByStageId(stageId: string | null | undefined): Step[] {
         return this.database.steps.filter(step => step.stageId == stageId)
     }
 
@@ -26,7 +26,7 @@ export class StepAPI {
         else return this.database.steps.slice(pageSize * (page -1), pageSize * page)
     }
 
-    switchStep(id: string): Step {
+    toggleStep(id: string): Step {
         const stepIndex = _.findIndex(this.database.steps, step => step.id == id)
         this.database.steps[stepIndex].completed = !this.database.steps[stepIndex].completed
         // Once the value has changed, the stage needs to be updated

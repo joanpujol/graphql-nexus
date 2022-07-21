@@ -12,22 +12,22 @@ describe('Stage unit tests', () => {
         const step = stepApi.getStepById('3')
         expect(step?.title == 'do something 3')
         const anotherStep = stepApi.getStepById('-50')
-        expect(typeof anotherStep == undefined)
+        expect(anotherStep).toBeUndefined()
     })
 
     it('should test that getStepsWithPagination function works as expected', () => {
         const steps = stepApi.getStepsWithPagination(2, 2)
         expect(steps.length == 2)
-        expect(steps[0].title == 'do something 3')
+        expect(steps[0].title).toEqual('do something 3')
     })
 
     it('should test that getStepsByStageId function works as expected', () => {
         const steps = stepApi.getStepsByStageId('2')
-        expect(steps.length == 2)
+        expect(steps.length).toEqual(1)
     })
 
     it('should test that toggleStep function works as expected', () => {
         stepApi.toggleStep('4')
-        expect(db.stages[1].completed)
+        expect(db.stages[1].completed).toBeTruthy()
     })
 })
